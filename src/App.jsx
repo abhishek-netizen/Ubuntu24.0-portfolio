@@ -18,6 +18,7 @@ import {
   BatteryFull,
   Sparkles,
   BookOpen,
+  Terminal,
 } from "lucide-react";
 import GradioChatWindow from "./components/GradioChatWindow";
 import profile from "../profile.json";
@@ -79,6 +80,15 @@ const WINDOW_DEFS = [
     h: 480,
     featured: true,
     hint: "Ask a question, get an instant answer",
+  },
+  {
+    id: "terminal",
+    label: "Terminal",
+    title: "abhishek@ubuntu-desktop: ~",
+    icon: Terminal,
+    w: 540,
+    h: 380,
+    hint: "Interactive GNOME Terminal & CLI",
   },
   {
     id: "about",
@@ -150,9 +160,13 @@ const WINDOW_DEFS = [
 /*  Window body content                                               */
 /* ------------------------------------------------------------------ */
 
-function WindowBody({ id }) {
+function WindowBody({ id, onOpen }) {
   if (id === "digital_twin") {
     return <GradioChatWindow />;
+  }
+
+  if (id === "terminal") {
+    return <TerminalApp onOpen={onOpen} />;
   }
 
   if (id === "about") {
@@ -343,6 +357,322 @@ function WindowBody({ id }) {
 
   return null;
 }
+/* ------------------------------------------------------------------ */
+/*  Interactive Ubuntu Terminal Component                             */
+/* ------------------------------------------------------------------ */
+
+function TerminalApp({ onOpen }) {
+  const [history, setHistory] = useState([
+    {
+      type: "banner",
+      text: (
+        <div style={{ color: "#aaa", marginBottom: 10, lineHeight: 1.4 }}>
+          <div>Welcome to Ubuntu 24.04 LTS (GNU/Linux 6.8.0-40-generic x86_64)</div>
+          <br />
+          <div> * Documentation:  https://help.ubuntu.com</div>
+          <div> * Management:     https://landscape.canonical.com</div>
+          <div> * Support:        https://ubuntu.com/pro</div>
+          <br />
+          <div>Type <span style={{ color: "#4CAF50", fontWeight: "bold" }}>help</span> or <span style={{ color: "#f48225", fontWeight: "bold" }}>neofetch</span> for available commands.</div>
+        </div>
+      ),
+    },
+  ]);
+  const [inputVal, setInputVal] = useState("");
+  const [cmdHistory, setCmdHistory] = useState([]);
+  const [historyIdx, setHistoryIdx] = useState(-1);
+  const bottomRef = useRef(null);
+  const inputRef = useRef(null);
+
+  useEffect(() => {
+    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [history]);
+
+  const handleCommand = (e) => {
+    if (e.key === "Enter") {
+      const raw = inputVal.trim();
+      const parts = raw.split(" ");
+      const cmd = parts[0].toLowerCase();
+      const arg = parts.slice(1).join(" ");
+
+      const newHistory = [...history, { type: "input", text: raw }];
+      if (raw) setCmdHistory((prev) => [...prev, raw]);
+      setHistoryIdx(-1);
+      setInputVal("");
+
+      if (!cmd) {
+        setHistory(newHistory);
+        return;
+      }
+
+      let response = null;
+
+      switch (cmd) {
+        case "help":
+          response = (
+            <div style={{ color: "#ddd" }}>
+              <div>Available Commands:</div>
+              <div style={{ paddingLeft: 12, marginTop: 4 }}>
+                <div><b style={{ color: "#f48225" }}>neofetch</b>     - Display Ubuntu system information & ASCII logo</div>
+                <div><b style={{ color: "#4CAF50" }}>ls / dir</b>     - List files in current directory</div>
+                <div><b style={{ color: "#4CAF50" }}>cat &lt;file&gt;</b>   - View file contents (e.g. cat about.txt, cat skills.conf)</div>
+                <div><b style={{ color: "#00BCD4" }}>open &lt;app&gt;</b>   - Open desktop app (e.g. open resume, open contact, open twin)</div>
+                <div><b style={{ color: "#aaa" }}>whoami</b>       - Show current logged-in user</div>
+                <div><b style={{ color: "#aaa" }}>uname -a</b>     - Display kernel and OS details</div>
+                <div><b style={{ color: "#aaa" }}>date</b>         - Output current system timestamp</div>
+                <div><b style={{ color: "#aaa" }}>clear / cls</b>  - Clear the terminal screen</div>
+                <div><b style={{ color: "#aaa" }}>echo &lt;txt&gt;</b>   - Print text to stdout</div>
+                <div><b style={{ color: "#FF5722" }}>sudo &lt;cmd&gt;</b>   - Execute with administrative privileges</div>
+              </div>
+            </div>
+          );
+          break;
+
+        case "neofetch":
+        case "fastfetch":
+          response = (
+            <div style={{ display: "flex", gap: 16, marginTop: 8, marginBottom: 8, flexWrap: "wrap" }}>
+              <pre style={{ color: "#E95420", margin: 0, fontWeight: "bold", fontSize: 11, lineHeight: 1.2 }}>
+{`            .-/+O:-.
+        \`.:+++++++=:\`
+      .+++=:-\`\`\`\`-:+ bodega
+    .=+=:          :++\`
+   .+=:            \`++=
+   :++              .-
+  :=+=             .++-
+  --:=:           .+++.
+   :++            \`++=
+   .+=:            \`++=
+    .=+=:          :++\`
+      .+++=:-\`\`\`\`-:+
+        \`.:+++++++=:\`
+            .-/+O:-.`}
+              </pre>
+              <div style={{ fontSize: 11.5, lineHeight: 1.5, color: "#eee" }}>
+                <div><b style={{ color: "#E95420" }}>{profile.shortName.toLowerCase()}</b>@<b>ubuntu-desktop</b></div>
+                <div>------------------------</div>
+                <div><b>OS:</b> Ubuntu 24.04 LTS x86_64</div>
+                <div><b>Host:</b> Digital Twin Engine v2.4</div>
+                <div><b>Kernel:</b> 6.8.0-40-generic</div>
+                <div><b>Uptime:</b> 7 days, 4 hours</div>
+                <div><b>Shell:</b> zsh / bash 5.2.21</div>
+                <div><b>Role:</b> {profile.role}</div>
+                <div><b>Company:</b> {profile.company}</div>
+                <div><b>Memory:</b> 4096MB / 16384MB</div>
+              </div>
+            </div>
+          );
+          break;
+
+        case "ls":
+        case "dir":
+          response = (
+            <div style={{ display: "flex", gap: 16, color: "#4CAF50", fontWeight: "bold" }}>
+              <span>about.txt</span>
+              <span>skills.conf</span>
+              <span>experience.log</span>
+              <span>certs.sh</span>
+              <span>contact.txt</span>
+              <span style={{ color: "#2196F3" }}>resume.pdf</span>
+              <span style={{ color: "#f48225" }}>digital_twin.py</span>
+            </div>
+          );
+          break;
+
+        case "cat":
+          if (!arg) {
+            response = <span style={{ color: "#FF5722" }}>cat: missing file operand. Usage: cat &lt;filename&gt;</span>;
+          } else if (arg === "about.txt") {
+            response = <div style={{ color: "#ddd" }}>{profile.githubBio || profile.role}</div>;
+          } else if (arg === "skills.conf") {
+            response = (
+              <div style={{ color: "#aaa" }}>
+                <div>[Frontend] React.js, Next.js, React Native, TypeScript, TailwindCSS</div>
+                <div>[Backend] Node.js, Python, SAM CLI, AWS Lambda, REST/GraphQL</div>
+                <div>[Database] PostgreSQL, DynamoDB, Redis</div>
+              </div>
+            );
+          } else if (arg === "experience.log") {
+            response = (
+              <div style={{ color: "#ddd" }}>
+                <div>[2021-Present] {profile.role} at {profile.company}</div>
+                <div>* Developing enterprise microservices, cloud pipelines & AI Digital Twins.</div>
+              </div>
+            );
+          } else if (arg === "certs.sh") {
+            response = <div style={{ color: "#4CAF50" }}>✔ AWS Certified Solutions Architect · AWS Certified Developer</div>;
+          } else if (arg === "contact.txt") {
+            response = (
+              <div style={{ color: "#ddd" }}>
+                <div>Email: {profile.email}</div>
+                <div>GitHub: {profile.githubUrl}</div>
+                <div>LinkedIn: {profile.linkedinUrl}</div>
+                <div>Twitter: {profile.twitterUrl}</div>
+                <div>Stack Overflow: {profile.stackoverflowUrl}</div>
+              </div>
+            );
+          } else if (arg === "resume.pdf") {
+            response = <span style={{ color: "#2196F3" }}>[Binary PDF File] Use command 'open resume' to download.</span>;
+          } else if (arg === "digital_twin.py") {
+            response = (
+              <pre style={{ color: "#f48225", margin: 0, fontSize: 11 }}>
+{`import gradio as gr
+from openai import OpenAI
+
+client = OpenAI()
+print("Digital Twin loaded for ${profile.name}")`}
+              </pre>
+            );
+          } else {
+            response = <span style={{ color: "#FF5722" }}>cat: {arg}: No such file or directory</span>;
+          }
+          break;
+
+        case "whoami":
+          response = <span>{profile.shortName.toLowerCase()} ({profile.role} @ {profile.company})</span>;
+          break;
+
+        case "uname":
+          response = <span>Linux ubuntu-desktop 6.8.0-40-generic #40-Ubuntu SMP PREEMPT_DYNAMIC x86_64 GNU/Linux</span>;
+          break;
+
+        case "date":
+          response = <span>{new Date().toString()}</span>;
+          break;
+
+        case "clear":
+        case "cls":
+          setHistory([]);
+          return;
+
+        case "echo":
+          response = <span>{arg}</span>;
+          break;
+
+        case "open":
+          if (!arg) {
+            response = <span style={{ color: "#FF5722" }}>Usage: open &lt;app_name&gt; (e.g. open resume, open contact, open twin)</span>;
+          } else {
+            const target = arg.toLowerCase().replace(".py", "").replace(".txt", "").replace(".pdf", "");
+            if (target === "twin" || target === "digital_twin" || target === "ai") {
+              onOpen("digital_twin");
+              response = <span style={{ color: "#4CAF50" }}>Launching Digital Twin AI Window...</span>;
+            } else if (target === "resume") {
+              onOpen("resume");
+              response = <span style={{ color: "#4CAF50" }}>Opening Resume Window...</span>;
+            } else if (target === "contact") {
+              onOpen("contact");
+              response = <span style={{ color: "#4CAF50" }}>Opening Contact Window...</span>;
+            } else if (target === "about") {
+              onOpen("about");
+              response = <span style={{ color: "#4CAF50" }}>Opening About Window...</span>;
+            } else if (target === "skills") {
+              onOpen("skills");
+              response = <span style={{ color: "#4CAF50" }}>Opening Skills Window...</span>;
+            } else if (target === "experience") {
+              onOpen("experience");
+              response = <span style={{ color: "#4CAF50" }}>Opening Experience Window...</span>;
+            } else {
+              response = <span style={{ color: "#FF5722" }}>open: App '{arg}' not found. Try: open resume, open contact, open twin</span>;
+            }
+          }
+          break;
+
+        case "sudo":
+          response = (
+            <div style={{ color: "#FF5722" }}>
+              <div>[sudo] password for {profile.shortName.toLowerCase()}: *******</div>
+              <div>Permission denied: {profile.name} controls this desktop environment!</div>
+            </div>
+          );
+          break;
+
+        default:
+          response = <span style={{ color: "#FF5722" }}>command not found: {cmd}. Type 'help' for available commands.</span>;
+      }
+
+      setHistory([...newHistory, { type: "output", text: response }]);
+    } else if (e.key === "ArrowUp") {
+      e.preventDefault();
+      if (cmdHistory.length > 0) {
+        const nextIdx = historyIdx + 1;
+        if (nextIdx < cmdHistory.length) {
+          setHistoryIdx(nextIdx);
+          setInputVal(cmdHistory[cmdHistory.length - 1 - nextIdx]);
+        }
+      }
+    } else if (e.key === "ArrowDown") {
+      e.preventDefault();
+      if (historyIdx > 0) {
+        const nextIdx = historyIdx - 1;
+        setHistoryIdx(nextIdx);
+        setInputVal(cmdHistory[cmdHistory.length - 1 - nextIdx]);
+      } else if (historyIdx === 0) {
+        setHistoryIdx(-1);
+        setInputVal("");
+      }
+    }
+  };
+
+  return (
+    <div
+      className="ubuntu-terminal"
+      onClick={() => inputRef.current?.focus()}
+      style={{
+        background: "#1c1921",
+        color: "#fff",
+        fontFamily: "'Ubuntu Mono', 'Fira Code', monospace",
+        fontSize: "12.5px",
+        padding: "12px",
+        height: "100%",
+        boxSizing: "border-box",
+        overflowY: "auto",
+        display: "flex",
+        flexDirection: "column",
+      }}
+    >
+      {history.map((item, idx) => (
+        <div key={idx} style={{ marginBottom: "6px" }}>
+          {item.type === "input" ? (
+            <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
+              <span style={{ color: "#4CAF50", fontWeight: "bold" }}>
+                {profile.shortName.toLowerCase()}@ubuntu-desktop:~$
+              </span>
+              <span style={{ color: "#fff" }}>{item.text}</span>
+            </div>
+          ) : (
+            item.text
+          )}
+        </div>
+      ))}
+
+      <div style={{ display: "flex", gap: "8px", alignItems: "center" }}>
+        <span style={{ color: "#4CAF50", fontWeight: "bold" }}>
+          {profile.shortName.toLowerCase()}@ubuntu-desktop:~$
+        </span>
+        <input
+          ref={inputRef}
+          type="text"
+          value={inputVal}
+          onChange={(e) => setInputVal(e.target.value)}
+          onKeyDown={handleCommand}
+          autoFocus
+          style={{
+            background: "transparent",
+            border: "none",
+            outline: "none",
+            color: "#fff",
+            fontFamily: "inherit",
+            fontSize: "inherit",
+            flex: 1,
+          }}
+        />
+      </div>
+      <div ref={bottomRef} />
+    </div>
+  );
+}
+
 
 /* ------------------------------------------------------------------ */
 /*  Boot: verbose systemd-style log                                    */
@@ -539,7 +869,7 @@ function fakeTime(seed) {
 /*  Draggable / mobile-safe window                                     */
 /* ------------------------------------------------------------------ */
 
-function Win({ def, pos, z, isMobile, onFocus, onMove, onClose }) {
+function Win({ def, pos, z, isMobile, onFocus, onMove, onClose, onOpen }) {
   const dragRef = useRef(null);
 
   const onDown = useCallback(
@@ -603,7 +933,7 @@ function Win({ def, pos, z, isMobile, onFocus, onMove, onClose }) {
         </span>
       </div>
       <div className="win-content" style={isMobile ? undefined : { maxHeight: def.h }}>
-        <WindowBody id={def.id} />
+        <WindowBody id={def.id} onOpen={onOpen} />
       </div>
     </div>
   );
@@ -995,6 +1325,7 @@ function Desktop({ reducedMotion }) {
           onFocus={() => focusWindow(d.id)}
           onMove={moveWindow}
           onClose={closeWindow}
+          onOpen={openWindow}
         />
       ))}
 
