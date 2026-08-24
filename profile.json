@@ -1,0 +1,85 @@
+{
+  "name": "Abhishek J N",
+  "shortName": "Abhishek",
+  "role": "Full Stack Software Engineer",
+  "company": "Deloitte India (Eli Lilly Client Engagement)",
+  "location": "Bengaluru, India",
+  "email": "sayhello.jn.7@gmail.com",
+  "linkedinUrl": "https://www.linkedin.com/in/abhishek-j-n/",
+  "githubUrl": "https://github.com/abhishek-netizen",
+  "githubUsername": "abhishek-netizen",
+  "githubAvatarUrl": "https://github.com/abhishek-netizen.png",
+  "githubBio": "Software developer with background in Full Stack software application development with 7 years of experience",
+  "githubStats": {
+    "followers": 23,
+    "following": 63,
+    "repositories": 70,
+    "stars": 87
+  },
+  "twitterUrl": "https://x.com/JnAbhish",
+  "twitterUsername": "@JnAbhish",
+  "mediumUrl": "https://medium.com/@abhishwithu",
+  "mediumUsername": "@abhishwithu",
+  "stackoverflowUrl": "https://stackoverflow.com/users/12706366/abhishh",
+  "stackoverflowUsername": "abhiSHH",
+  "stackoverflowStats": {
+    "reputation": 459,
+    "peopleReached": "~635k",
+    "visitedDays": 836,
+    "silverBadges": 7,
+    "bronzeBadges": 9,
+    "topAnswers": [
+      { "title": "Gradle build fails with Out of Memory", "score": 9 },
+      { "title": "Navigate is not defined in react native", "score": 7 },
+      { "title": "How Center Components Using Flexbox", "score": 6 }
+    ]
+  },
+  "mediumArticles": [
+    {
+      "id": 0,
+      "title": "Recent Medium Article #1",
+      "badgeUrl": "https://github-readme-medium-recent-article.vercel.app/medium/@abhishwithu/0"
+    },
+    {
+      "id": 1,
+      "title": "Recent Medium Article #2",
+      "badgeUrl": "https://github-readme-medium-recent-article.vercel.app/medium/@abhishwithu/1"
+    },
+    {
+      "id": 2,
+      "title": "Recent Medium Article #3",
+      "badgeUrl": "https://github-readme-medium-recent-article.vercel.app/medium/@abhishwithu/2"
+    }
+  ],
+  "resumePdfPath": "/resume.pdf",
+  "avatarInitial": "A",
+  "degree": "B.E., Electrical & Electronics Engineering — Acharya Institute of Technology",
+  "aboutParagraphs": [
+    "Hi, I'm Abhishek J N — a Full Stack Software Engineer currently contributing to digital transformation initiatives at Deloitte India (Eli Lilly Client Engagement) in Bengaluru.",
+    "I specialize in building performant, cloud-native web applications using React.js, Node.js, Python (Flask/FastAPI), and AWS serverless services (Lambda, API Gateway, DynamoDB, Glue, Textract, S3, ChatGPT API)."
+  ],
+  "experienceLog": "[ACTIVE]  role=Full_Stack_Software_Engineer   company=Deloitte_India (Eli Lilly)\n  - end-to-end web app development (React.js, Node.js, Python, AWS)\n  - AI document processing workflows via AWS Textract & OpenAI APIs\n  - Azure AD SSO, RBAC, session management with DynamoDB\n  - cloud-native API design on AWS (Lambda, SAM, Glue Jobs, API Gateway)\n\n[PREVIOUS] role=Full_Stack_Software_Engineer   company=Turtil\n  - scalable web apps (React, TypeScript, FastAPI, Flask, AWS)\n  - cloud migration to AWS serverless, reduced query execution by 40%\n\n[PREVIOUS] role=Software_Developer            company=Lobb_Logistics\n  - React Native mobile development, REST APIs, app optimization\n\n[PREVIOUS] role=Software_Engineer             company=Wipadika_Innovations\n  - React.js frontend development, Redux state management, Sentry, Firebase",
+  "skillsConf": "[stack]\nlanguages        = [\"JavaScript (ES6+)\", \"TypeScript\", \"Python\"]\nfrontend         = [\"React.js\", \"React Native\", \"Tailwind CSS\", \"Redux\", \"React Query\"]\nbackend          = [\"Node.js\", \"Python Flask\", \"FastAPI\", \"Express\"]\ndatabases        = [\"PostgreSQL\", \"DynamoDB\", \"MySQL\", \"Redis\", \"MongoDB\"]\n\n[cloud_and_ai]\naws_services     = [\"Lambda\", \"API Gateway\", \"S3\", \"Glue\", \"DynamoDB\", \"AWS SAM\", \"CDK\"]\nai_integration   = [\"OpenAI / ChatGPT API\", \"AWS Textract\", \"Pandas\", \"NumPy\"]\ndevops           = [\"Git\", \"GitHub Actions\", \"AWS CodePipeline\", \"Docker\"]\n\n[education]\ndegree = \"B.E., Electrical & Electronics Engineering (AIT Bengaluru)\"",
+  "certificationsSh": "$ ./certs.sh\n\n> AWS Solutions Architect — Udemy\n  status ............... completed\n\n> Machine Learning Intern — KPMG\n  status ............... completed\n\n> Data Science Intern — ExcelR\n  status ............... completed\n\n> Education\n  B.E. Electrical & Electronics Engineering\n  Acharya Institute of Technology, Bengaluru",
+  "bootLogs": [
+    { "s": "ok", "text": "Started Load Kernel Modules." },
+    { "s": "ok", "text": "Mounted /home/abhishek." },
+    { "s": "ok", "text": "Reached target Local File Systems." },
+    { "s": "ok", "text": "Started NetworkManager." },
+    { "s": "ok", "text": "Starting aws-cloud-services.service..." },
+    { "s": "ok", "text": "Started aws-cloud-services.service — Lambda, SAM & API Gateway" },
+    { "s": "ok", "text": "Starting react-frontend.service..." },
+    { "s": "ok", "text": "Started react-frontend.service — Vite & React.js engine online" },
+    { "s": "ok", "text": "Starting openai-twin.service..." },
+    { "s": "ok", "text": "Started openai-twin.service — Gradio AI Assistant active" },
+    { "s": "run", "text": "Checking certifications: AWS Solutions Architect .......... in progress" },
+    { "s": "ok", "text": "Starting build-pipeline.service..." },
+    { "s": "ok", "text": "Started build-pipeline.service." },
+    { "s": "ok", "text": "Reached target Graphical Interface." }
+  ],
+  "sampleQuestions": [
+    "What is your experience at Deloitte?",
+    "What AWS services do you use?",
+    "Tell me about your AI integrations."
+  ]
+}
