@@ -1,0 +1,3 @@
+{
+  "buildCommand": "echo 'No frontend build needed for Python backend'"
+}
