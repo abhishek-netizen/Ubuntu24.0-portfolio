@@ -31,8 +31,9 @@ PERSONA_NAME = PROFILE.get("name", "Abhishek J N")
 PERSONA_ROLE = PROFILE.get("role", "Full Stack Software Engineer")
 PERSONA_SHORT = PROFILE.get("shortName", "Abhishek")
 
-# Read and extract text from twin/resume.pdf with layout normalization
 pdf_path = os.path.join(backend_dir, "twin", "resume.pdf")
+if not os.path.exists(pdf_path):
+    pdf_path = os.path.join(backend_dir, "resume.pdf")
 resume_text = ""
 if os.path.exists(pdf_path):
     try:
