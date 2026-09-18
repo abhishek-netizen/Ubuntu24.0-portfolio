@@ -1282,6 +1282,10 @@ function Desktop({ reducedMotion }) {
             <span className="stack-badge aws">AWS</span>
             <span className="stack-badge git">Git</span>
             <span className="stack-badge linux">Linux</span>
+            <span className="stack-badge langchain">LangChain</span>
+            <span className="stack-badge langgraph">LangGraph</span>
+            <span className="stack-badge rag">RAG</span>
+
           </div>
 
           <div className="wp-gh-bar">
@@ -1750,6 +1754,9 @@ export default function App() {
         .stack-badge.aws { border-color: rgba(255, 153, 0, 0.4); color: #ff9900; }
         .stack-badge.git { border-color: rgba(240, 80, 50, 0.4); color: #f05032; }
         .stack-badge.linux { border-color: rgba(233, 84, 32, 0.4); color: var(--ubuntu-orange-light); }
+        .stack-badge.langchain { border-color: rgba(84, 145, 28, 0.4); color: #54911c; }
+        .stack-badge.langgraph { border-color: rgba(19, 111, 88, 0.4); color: #2d997eff; }
+        .stack-badge.rag { border-color: rgba(106, 17, 98, 0.4); color: #cb15bcff; }  
         .wp-github-bar {
           display: flex;
           align-items: center;
