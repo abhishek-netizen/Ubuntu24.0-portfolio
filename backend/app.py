@@ -317,6 +317,8 @@ demo = gr.ChatInterface(
     ]),
 )
 
+app = demo.app
+
 if __name__ == "__main__":
     if not os.environ.get("OPENAI_API_KEY"):
         print("⚠️  WARNING: OPENAI_API_KEY is not set. Set it before running, e.g.")
