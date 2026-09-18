@@ -7,7 +7,6 @@
     "dev:react": "vite",
     "dev:python": "backend/venv/bin/python backend/app.py",
     "dev": "concurrently \"npm run dev:react\" \"npm run dev:python\"",
-    "prebuild": "npm install",
     "build": "vite build",
     "preview": "vite preview"
   },
