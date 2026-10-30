@@ -92,7 +92,16 @@ class handler(BaseHTTPRequestHandler):
                 self.wfile.write(json.dumps({"error": "OPENAI_API_KEY environment variable is not configured."}).encode("utf-8"))
                 return
 
-            client = OpenAI(api_key=api_key)
+            # Auto-detect OpenRouter vs OpenAI based on key prefix
+            if api_key.startswith("sk-or-"):
+                client = OpenAI(
+                    api_key=api_key,
+                    base_url="https://openrouter.ai/api/v1",
+                )
+                model = "openai/gpt-4o-mini"
+            else:
+                client = OpenAI(api_key=api_key)
+                model = "gpt-4o-mini"
             messages = [{"role": "system", "content": SYSTEM_PROMPT}]
 
             for item in history:
@@ -102,7 +111,7 @@ class handler(BaseHTTPRequestHandler):
             messages.append({"role": "user", "content": user_message})
 
             completion = client.chat.completions.create(
-                model="gpt-4o-mini",
+                model=model,
                 messages=messages,
                 temperature=0.7,
                 max_tokens=500,
